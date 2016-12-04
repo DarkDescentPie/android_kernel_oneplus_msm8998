@@ -154,6 +154,7 @@ static ssize_t irq_ack(struct device* device,
 	return count;
 }
 static DEVICE_ATTR(irq, S_IRUSR | S_IWUSR, irq_get, irq_ack);
+extern void s3320_disable_gestures(bool disable);
 
 static void set_fpc_irq(struct fpc1020_data *fpc1020, bool enable)
 {
@@ -244,6 +245,7 @@ static ssize_t proximity_state_set(struct device *dev,
 		return -EINVAL;
 
  	fpc1020->proximity_state = !!val;
+	s3320_disable_gestures(fpc1020->proximity_state);
 
 	if (!fpc1020->screen_state)
 		set_fpc_irq(fpc1020, !fpc1020->proximity_state);

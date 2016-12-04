@@ -486,6 +486,7 @@ struct synaptics_ts_data {
 	struct notifier_block fb_notif;
 #endif
 	/******gesture*******/
+	bool gestures_disabled;
 	int gesture_enable;
 	int in_gesture_mode;
 	int glove_enable;
@@ -1140,6 +1141,14 @@ static void synaptics_get_coordinate_point(struct synaptics_ts_data *ts)
 	(coordinate_buf[24] & 0x20) ? 0 : 2;
 }
 
+void s3320_disable_gestures(bool disable)
+{
+	struct synaptics_ts_data *ts = ts_g;
+
+ 	if (ts)
+		ts->gestures_disabled = disable;
+}
+
 static void gesture_judge(struct synaptics_ts_data *ts)
 {
 	unsigned int keyCode = KEY_F4;
@@ -1270,10 +1279,12 @@ static void gesture_judge(struct synaptics_ts_data *ts)
 	|| (gesture == DouSwip && DouSwip_gesture)
 	|| gesture == Sgestrue || gesture == Wgestrue || gesture == Mgestrue) {
 		gesture_upload = gesture;
-		input_report_key(ts->input_dev, keyCode, 1);
-		input_sync(ts->input_dev);
-		input_report_key(ts->input_dev, keyCode, 0);
-		input_sync(ts->input_dev);
+		if (!ts->gestures_disabled) {
+			input_report_key(ts->input_dev, keyCode, 1);
+			input_sync(ts->input_dev);
+			input_report_key(ts->input_dev, keyCode, 0);
+			input_sync(ts->input_dev);
+		}
 	} else {
 		ret = i2c_smbus_read_i2c_block_data(ts->client,
 		F12_2D_CTRL20, 3, &(reportbuf[0x0]));
