@@ -467,7 +467,6 @@ static enum power_supply_property smb2_usb_props[] = {
 	POWER_SUPPLY_PROP_TYPEC_MODE,
 	POWER_SUPPLY_PROP_TYPEC_POWER_ROLE,
 	POWER_SUPPLY_PROP_TYPEC_CC_ORIENTATION,
-	POWER_SUPPLY_PROP_OTG_SWITCH,
 	POWER_SUPPLY_PROP_OEM_TYPEC_CC_ORIENTATION,
 	POWER_SUPPLY_PROP_PD_ALLOWED,
 	POWER_SUPPLY_PROP_PD_ACTIVE,
@@ -541,10 +540,6 @@ static int smb2_usb_get_prop(struct power_supply *psy,
 			val->intval = POWER_SUPPLY_TYPEC_SOURCE_DEFAULT;
 		else
 			val->intval = chg->typec_mode;
-		break;
-/* david.liu@bsp, 20170414 Add otg switch */
-	case POWER_SUPPLY_PROP_OTG_SWITCH:
-		val->intval = chg->otg_switch;
 		break;
 	case POWER_SUPPLY_PROP_TYPEC_POWER_ROLE:
 		if (chg->micro_usb_mode)
@@ -622,10 +617,8 @@ static int smb2_usb_set_prop(struct power_supply *psy,
 	struct smb_charger *chg = &chip->chg;
 	int rc = 0;
 
-	/*when usb is plug out, some prop can't be set */
 	mutex_lock(&chg->lock);
-/* david.liu@bsp, 20170417 Fix otg switch */
-	if (!chg->typec_present && psp != POWER_SUPPLY_PROP_OTG_SWITCH) {
+	if (!chg->typec_present) {
 		rc = -EINVAL;
 		goto unlock;
 	}
@@ -633,10 +626,6 @@ static int smb2_usb_set_prop(struct power_supply *psy,
 	switch (psp) {
 	case POWER_SUPPLY_PROP_PD_CURRENT_MAX:
 		rc = smblib_set_prop_pd_current_max(chg, val);
-		break;
-/* david.liu@bsp, 20170414 Add otg switch */
-	case POWER_SUPPLY_PROP_OTG_SWITCH:
-		rc = op_set_prop_otg_switch(chg, val);
 		break;
 	case POWER_SUPPLY_PROP_TYPEC_POWER_ROLE:
 		rc = smblib_set_prop_typec_power_role(chg, val);
@@ -684,8 +673,6 @@ static int smb2_usb_prop_is_writeable(struct power_supply *psy,
 		enum power_supply_property psp)
 {
 	switch (psp) {
-/* david.liu@bsp, 20170414 Add otg switch */
-	case POWER_SUPPLY_PROP_OTG_SWITCH:
 	case POWER_SUPPLY_PROP_CTM_CURRENT_MAX:
 		return 1;
 	default:
@@ -1574,33 +1561,6 @@ static int smb2_configure_typec(struct smb_charger *chg)
 	if (rc < 0) {
 		dev_err(chg->dev,
 			"Couldn't configure Type-C interrupts rc=%d\n", rc);
-		return rc;
-	}
-/* david.liu@bsp, 20170414 Add otg switch */
-	if (chg->otg_switch) {
-		/* restore it back to 0xA5 */
-		rc = smblib_write(chg, TM_IO_DTEST4_SEL, 0xA5);
-		if (rc < 0)
-			dev_err(chg->dev,
-			"Couldn't restore it back rc=%d\n", rc);
-		rc = smblib_masked_write(chg,
-					TYPE_C_INTRPT_ENB_SOFTWARE_CTRL_REG,
-					TYPEC_POWER_ROLE_CMD_MASK, 0);
-	} else {
-		/* disable PBS workaround when forcing sink mode */
-		rc = smblib_write(chg, TM_IO_DTEST4_SEL, 0x0);
-		if (rc < 0)
-			dev_err(chg->dev,
-			"Couldn't disable PBS workaround rc=%d\n", rc);
-
-		rc = smblib_masked_write(chg,
-					TYPE_C_INTRPT_ENB_SOFTWARE_CTRL_REG,
-					TYPEC_POWER_ROLE_CMD_MASK,
-					UFP_EN_CMD_BIT);
-	}
-	if (rc < 0) {
-		dev_err(chg->dev,
-			"Couldn't configure power role for DRP rc=%d\n", rc);
 		return rc;
 	}
 
