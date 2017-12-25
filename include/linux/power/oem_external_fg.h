@@ -107,7 +107,4 @@ bool get_extern_bq_present(void);
 extern int get_charging_status(void);
 extern int fuelgauge_battery_temp_region_get(void);
 extern bool get_oem_charge_done_status(void);
-/*add for dash adapter update*/
-extern bool dash_adapter_update_is_tx_gpio(unsigned long gpio_num);
-extern bool dash_adapter_update_is_rx_gpio(unsigned long gpio_num);
 #endif
