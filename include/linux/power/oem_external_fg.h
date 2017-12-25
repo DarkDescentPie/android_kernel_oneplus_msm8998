@@ -104,13 +104,9 @@ void bq27541_information_register(struct external_battery_gauge *fast_chg);
 void bq27541_information_unregister(struct external_battery_gauge *fast_chg);
 bool get_extern_fg_regist_done(void);
 bool get_extern_bq_present(void);
-int get_prop_pre_shutdown_soc(void);
 extern int get_charging_status(void);
 extern int fuelgauge_battery_temp_region_get(void);
 extern bool get_oem_charge_done_status(void);
-extern int load_soc(void);
-extern void backup_soc_ex(int soc);
-extern void clean_backup_soc_ex(void);
 /*add for dash adapter update*/
 extern bool dash_adapter_update_is_tx_gpio(unsigned long gpio_num);
 extern bool dash_adapter_update_is_rx_gpio(unsigned long gpio_num);
