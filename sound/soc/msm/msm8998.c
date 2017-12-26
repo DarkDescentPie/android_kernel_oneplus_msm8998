@@ -522,7 +522,7 @@ static int msm_snd_enable_codec_ext_clk(struct snd_soc_codec *codec,
 					int enable, bool dapm);
 static int msm_wsa881x_init(struct snd_soc_component *component);
 
-int op_project_17801;
+static bool op_project_17801;
 
 /*
  * Need to report LINEIN
@@ -4364,7 +4364,7 @@ static int msm_set_pinctrl(struct msm_pinctrl_info *pinctrl_info,
 		goto err;
 	}
 
-	if (pinctrl_info->pinctrl == NULL) {
+	if (!pinctrl_info->pinctrl) {
 		pr_debug("%s: pinctrl_info->pinctrl is NULL\n", __func__);
 		goto err;
 	}
@@ -7260,8 +7260,6 @@ static int msm_init_wsa_dev(struct platform_device *pdev,
 	int found = 0;
 	int ret = 0;
 
-	return ret;
-
 	/* Get maximum WSA device count for this platform */
 	ret = of_property_read_u32(pdev->dev.of_node,
 				   "qcom,wsa-max-devs", &wsa_max_devs);
@@ -7527,12 +7525,8 @@ static int msm_asoc_machine_probe(struct platform_device *pdev)
 	platform_set_drvdata(pdev, card);
 	snd_soc_card_set_drvdata(card, pdata);
 
-	ret = of_property_read_bool(card->dev->of_node, "op,project_17801");
-	if (ret)
-		op_project_17801 = 0;
-	else
-		op_project_17801 = 1;
-	pr_err("%s project name: %d", __func__, op_project_17801);
+	op_project_17801 = of_property_read_bool(card->dev->of_node,
+							"op,project_17801");
 
 	ret = snd_soc_of_parse_card_name(card, "qcom,model");
 	if (ret) {
@@ -7583,9 +7577,12 @@ static int msm_asoc_machine_probe(struct platform_device *pdev)
 		ret = -EPROBE_DEFER;
 		goto err;
 	}
-	ret = msm_init_wsa_dev(pdev, card);
-	if (ret)
-		goto err;
+
+	if (IS_ENABLED(CONFIG_SND_SOC_WSA881X)) {
+		ret = msm_init_wsa_dev(pdev, card);
+		if (ret)
+			goto err;
+	}
 
 	ret = devm_snd_soc_register_card(&pdev->dev, card);
 	if (ret == -EPROBE_DEFER) {
