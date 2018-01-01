@@ -123,7 +123,6 @@ config SND_SOC_INT_CODEC
 	select MSM_CDC_PINCTRL
 	select SND_SOC_MSM_SDW
 	select SND_SOC_SDM660_CDC
-	select SND_SOC_MSM_HDMI_CODEC_RX
 	select QTI_PP
 	select DTS_SRS_TM
 	select SND_HWDEP
@@ -153,7 +152,6 @@ config SND_SOC_EXT_CODEC
 	select SND_SOC_WCD9335
 	select SND_SOC_WCD934X
 	select SND_SOC_WSA881X
-	select SND_SOC_MSM_HDMI_CODEC_RX
 	select MFD_CORE
 	select QTI_PP
 	select DTS_SRS_TM
@@ -183,7 +181,6 @@ config SND_SOC_MSM8996
 	select MSM_QDSP6V2_CODECS
 	select SND_SOC_WCD9335
 	select SND_SOC_WSA881X
-	select SND_SOC_MSM_HDMI_CODEC_RX if ARCH_MSM8996
 	select DTS_SRS_TM
 	select QTI_PP
 	select QTI_PP_AUDIOSPHERE
@@ -228,7 +225,6 @@ config SND_SOC_MSM8998
 	select MSM_QDSP6V2_CODECS
 	select SND_SOC_WCD9335
 	select SND_SOC_WCD934X
-	select SND_SOC_MSM_HDMI_CODEC_RX
 	select DTS_SRS_TM
 	select QTI_PP
 	select SND_SOC_CPE
