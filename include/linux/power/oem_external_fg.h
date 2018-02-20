@@ -94,4 +94,5 @@ bool get_extern_bq_present(void);
 extern int get_charging_status(void);
 extern int fuelgauge_battery_temp_region_get(void);
 extern bool get_oem_charge_done_status(void);
+void smblib_backup_soc(int soc);
 #endif
