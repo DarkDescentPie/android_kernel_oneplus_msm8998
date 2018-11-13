@@ -1,0 +1,3 @@
+config INPUT_FINGERPRINT_DETECT
+	tristate "Fingerprint Detect Driver"
+	depends on SPI_MASTER

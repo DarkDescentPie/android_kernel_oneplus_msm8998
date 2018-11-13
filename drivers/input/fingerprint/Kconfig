@@ -1,0 +1,22 @@
+#
+# Fingerprint driver configuration
+#
+menuconfig INPUT_FINGERPRINT
+	bool "Fingerprints"
+	help
+	  Say Y here, and a list of supported fingerprints will be displayed.
+	  This option doesn't affect the kernel.
+
+	  If unsure, say Y.
+
+if INPUT_FINGERPRINT
+
+source "drivers/input/fingerprint/fingerprint_detect/Kconfig"
+
+config INPUT_FPC1020
+	tristate "FPC 1020 Driver"
+	depends on SPI_MASTER
+
+source "drivers/input/fingerprint/goodix_fp/Kconfig"
+
+endif

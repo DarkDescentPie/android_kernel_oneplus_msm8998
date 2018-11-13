@@ -1,0 +1,3 @@
+config INPUT_GOODIX_FP
+	tristate "Goodix FP Driver"
+	depends on SPI_MASTER
