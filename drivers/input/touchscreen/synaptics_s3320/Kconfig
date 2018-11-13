@@ -1,0 +1,3 @@
+config TOUCHSCREEN_SYNAPTICS_S3320_I2C
+	tristate "Synaptics S3320 I2C Driver"
+	depends on I2C
