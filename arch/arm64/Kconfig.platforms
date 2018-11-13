@@ -182,4 +182,7 @@ config ARCH_ZYNQMP
 	help
 	  This enables support for Xilinx ZynqMP Family
 
+config BOARD_ONEPLUS5
+	bool "OnePlus 5/5T"
+
 endmenu
