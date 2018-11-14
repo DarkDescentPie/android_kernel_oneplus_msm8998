@@ -1,0 +1,3 @@
+config NFC_PN5XX
+	tristate "NXP PN5XX Driver"
+	depends on I2C
