@@ -1,1 +1,7 @@
+if BOARD_ONEPLUS5
+source "drivers/power/supply/oneplus/Kconfig"
+endif
+
+if !BOARD_ONEPLUS5
 source "drivers/power/supply/qcom/Kconfig"
+endif
