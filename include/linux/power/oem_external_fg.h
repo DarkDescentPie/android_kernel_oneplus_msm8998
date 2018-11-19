@@ -31,6 +31,7 @@ struct external_battery_gauge {
 	int (*get_battery_temperature)(void);
 	bool (*is_usb_switch_on)(void);
 	int (*get_batt_remaining_capacity)(void);
+	int (*get_batt_health)(void);
 	int (*get_battery_soc)(void);
 	int (*get_average_current)(void);
 	bool (*fast_chg_started)(void);
