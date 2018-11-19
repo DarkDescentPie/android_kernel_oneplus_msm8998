@@ -3519,8 +3519,6 @@ static int fg_psy_get_property(struct power_supply *psy,
 		if (chip->use_external_fg && external_fg
 				&& external_fg->get_batt_health)
 			pval->intval = external_fg->get_batt_health();
-		else if (get_extern_fg_regist_done() == false)
-			pval->intval = -1;
 		else
 			pval->intval = -1;
 		break;
