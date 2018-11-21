@@ -61,5 +61,34 @@
 		qcom,mdss-pan-physical-height-dimension = <122>;
 		qcom,ulps-enabled;
 		qcom,panel-allow-phy-poweroff;
+
+		cm,mdss-livedisplay-hbm-on-cmd = [
+			15 01 00 00 00 00 02 53 E8];
+		cm,mdss-livedisplay-hbm-off-cmd = [
+			15 01 00 00 00 00 02 53 28];
+		cm,mdss-livedisplay-srgb-on-cmd = [
+			39 01 00 00 00 00 03 f0 5A 5A
+			39 01 00 00 00 00 02 80 01
+			39 01 00 00 00 00 02 C3 13
+			39 01 00 00 00 00 02 B0 0E
+			39 01 00 00 00 00 16 C3 A0 02 04 3B C7 12 08 07 A8 4B E7 C9 BF 0A B9 E3 DA 18 FF F6 D4
+			39 01 00 00 00 00 03 f0 A5 A5];
+		cm,mdss-livedisplay-srgb-off-cmd = [
+			39 01 00 00 00 00 03 F0 5A 5A
+			39 01 00 00 00 00 02 80 00
+			39 01 00 00 00 00 02 C3 10
+			39 01 00 00 00 00 03 F0 A5 A5];
+		cm,mdss-livedisplay-dci-p3-on-cmd = [
+			39 01 00 00 00 00 03 f0 5A 5A
+			39 01 00 00 00 00 02 80 01
+			39 01 00 00 00 00 02 C3 13
+			39 01 00 00 00 00 02 B0 0E
+			39 01 00 00 00 00 16 C3 C6 00 00 16 D2 00 04 08 C3 1C F1 CF E2 02 CE E9 DF 00 FF F6 D4
+			39 01 00 00 00 00 03 f0 A5 A5];
+		cm,mdss-livedisplay-dci-p3-off-cmd = [
+			39 01 00 00 00 00 03 F0 5A 5A
+			39 01 00 00 00 00 02 80 00
+			39 01 00 00 00 00 02 C3 10
+			39 01 00 00 00 00 03 F0 A5 A5];
 	};
 };
