@@ -31,7 +31,6 @@
 		qcom,mdss-dsi-on-command = [
 			05 01 00 00 14 00 02 11 00
 			15 01 00 00 00 00 02 35 00
-			15 01 00 00 00 00 02 53 20
 			15 01 00 00 00 00 02 55 00
 			05 01 00 00 00 00 02 29 00];
 		qcom,mdss-dsi-off-command = [
@@ -63,9 +62,9 @@
 		qcom,panel-allow-phy-poweroff;
 
 		cm,mdss-livedisplay-hbm-on-cmd = [
-			15 01 00 00 00 00 02 53 E8];
+			15 01 00 00 00 00 02 53 E0];
 		cm,mdss-livedisplay-hbm-off-cmd = [
-			15 01 00 00 00 00 02 53 28];
+			15 01 00 00 00 00 02 53 20];
 		cm,mdss-livedisplay-srgb-on-cmd = [
 			39 01 00 00 00 00 03 f0 5A 5A
 			39 01 00 00 00 00 02 80 01
